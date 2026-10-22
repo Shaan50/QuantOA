@@ -1,0 +1,228 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Design tokens. Dark is the default; [data-theme='light'] overrides.
+   Category hues are the validated categorical slots 1–6 in fixed order.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: dark;
+  --bg: #08090c;
+  --bg-elev: #0c0e12;
+  --surface: #12151b;
+  --surface-2: #181c23;
+  --surface-3: #20252e;
+  --border: #222833;
+  --border-strong: #2e3643;
+  --grid: #222731;
+  --text: #e9edf3;
+  --text-2: #b3bdca;
+  --muted: #7c8696;
+  --faint: #535c6b;
+  --brand: #ffb224;
+  --brand-2: #ff8a3d;
+  --brand-ink: #1a1100;
+  --good: #2fc677;
+  --good-soft: rgba(47, 198, 119, 0.12);
+  --bad: #f2566c;
+  --bad-soft: rgba(242, 86, 108, 0.12);
+  --warn: #fab219;
+  --cat-mental-math: #3987e5;
+  --cat-sequences: #d95926;
+  --cat-probability: #199e70;
+  --cat-arbitrage: #c98500;
+  --cat-brainteasers: #d55181;
+  --cat-fermi: #008300;
+  --div-low: #e66767;
+  --div-mid: #383835;
+  --div-high: #3987e5;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 12px 40px -12px rgba(0, 0, 0, 0.6);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f5f7;
+  --bg-elev: #fbfbfc;
+  --surface: #ffffff;
+  --surface-2: #f3f5f8;
+  --surface-3: #e9ecf1;
+  --border: #e2e6ec;
+  --border-strong: #cdd3dc;
+  --grid: #e8ebf0;
+  --text: #0c1016;
+  --text-2: #3b4452;
+  --muted: #687284;
+  --faint: #9aa2af;
+  --brand: #d98a00;
+  --brand-2: #e0641f;
+  --brand-ink: #ffffff;
+  --good: #128a4a;
+  --good-soft: rgba(18, 138, 74, 0.1);
+  --bad: #d3304b;
+  --bad-soft: rgba(211, 48, 75, 0.09);
+  --cat-mental-math: #2a78d6;
+  --cat-sequences: #eb6834;
+  --cat-probability: #1baf7a;
+  --cat-arbitrage: #eda100;
+  --cat-brainteasers: #e87ba4;
+  --cat-fermi: #008300;
+  --div-low: #e34948;
+  --div-mid: #f0efec;
+  --div-high: #2a78d6;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px -12px rgba(16, 24, 40, 0.12);
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-ink: var(--brand-ink);
+  --color-good: var(--good);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+  --animate-flash-good: flash-good 0.5s ease-out;
+  --animate-shake: shake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+  --animate-pulse-red: pulse-red 1s ease-in-out infinite;
+  --animate-rise: rise 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-pop: pop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1.4) both;
+  --animate-fade: fade 0.25s ease-out both;
+}
+
+@keyframes flash-good {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 60%, transparent); }
+  100% { box-shadow: 0 0 0 18px transparent; }
+}
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-6px); }
+  40%, 60% { transform: translateX(6px); }
+}
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle trading-terminal grid that fades out down the page. */
+.app-backdrop {
+  position: relative;
+  isolation: isolate;
+}
+.app-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1100px 480px at 70% -8%, color-mix(in srgb, var(--brand) 10%, transparent), transparent 60%),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
+  background-position: 0 0, -1px -1px, -1px -1px;
+  mask-image: linear-gradient(to bottom, black 0, rgba(0, 0, 0, 0.55) 420px, transparent 900px);
+}
+:root[data-theme='light'] .app-backdrop::before {
+  opacity: 0.7;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+@layer base {
+  *:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+/* KaTeX sizing inside prompts */
+.prompt .katex-display {
+  margin: 0.6em 0;
+}
+.prompt .katex {
+  font-size: 1.12em;
+}
+.katex-display > .katex {
+  white-space: normal;
+}
+
+/* Left-aligned display math in compact lists */
+.prompt-left .katex-display {
+  margin: 0.25em 0;
+}
+.prompt-left .katex-display > .katex {
+  text-align: left;
+}
+
+/* Thin scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+:root[data-motion='reduce'] *,
+:root[data-motion='reduce'] *::before,
+:root[data-motion='reduce'] *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
